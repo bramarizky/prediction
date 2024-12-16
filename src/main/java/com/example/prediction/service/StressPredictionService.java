@@ -23,23 +23,23 @@ public class StressPredictionService {
 
     public int predictStressLevel(StressPredictionRequest request) {
         try {
-            // Menyiapkan header dengan format JSON
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            // Menyiapkan body request
             HttpEntity<StressPredictionRequest> entity = new HttpEntity<>(request, headers);
 
-            // Mengirimkan POST request ke backend Flask dan menerima response
-            ResponseEntity<Integer> response = restTemplate.exchange(pythonBackendUrl, HttpMethod.POST, entity, Integer.class);
+            // Mengembalikan Integer langsung dari response
+            ResponseEntity<Integer> response = restTemplate.exchange(
+                    pythonBackendUrl, HttpMethod.POST, entity, Integer.class
+            );
 
             return response.getBody();
         } catch (HttpClientErrorException | HttpServerErrorException e) {
             System.out.println("Error during request: " + e.getMessage());
-            return -1; // Indikator error
+            return -1;
         } catch (Exception e) {
             System.out.println("Unexpected error: " + e.getMessage());
-            return -1; // Indikator error
+            return -1;
         }
     }
 }

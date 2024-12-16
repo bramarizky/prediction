@@ -1,52 +1,282 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
   <title>Dashboard</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Chart.js for graphing -->
+
+  <!-- Custom styles for this template-->
+  <link href="/css/dashboard.css" rel="stylesheet">>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 </head>
-<body>
-<div class="container mt-5">
-  <!-- Display Prediction Result -->
-  <h1 class="text-center">Stress Level Prediction Result</h1>
-  <div class="alert alert-info">
-    <h4 class="alert-heading">Your Stress Level:</h4>
-    <p>Stress Level: <span th:text="${stressLevel}">Level X</span></p>
-  </div>
-  <div class="text-center">
-    <a href="/input-form" class="btn btn-primary">Go Back to Input Form</a>
-  </div>
 
-  <!-- Display Graph -->
-  <h2 class="mt-5">Stress Level Insights</h2>
-  <canvas id="stressChart" width="400" height="200"></canvas>
+<body id="page-top">
 
-  <script>
-    // Example data for the chart (Replace with actual data)
-    const ctx = document.getElementById('stressChart').getContext('2d');
-    const stressChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Age', 'Heart Rate', 'Sleep', 'Steps', 'Systolic'], // Example parameter names
-        datasets: [{
-          label: 'Stress Level',
-          data: [65, 59, 80, 81, 56], // Example data (replace with actual data)
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgba(54, 162, 235, 1)',
-          borderWidth: 1
-        }]
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    });
-  </script>
+<!-- Page Wrapper -->
+<div id="wrapper">
+
+  <!-- Content Wrapper -->
+  <div id="content-wrapper" class="d-flex flex-column">
+
+    <!-- Main Content -->
+    <div id="content">
+
+      <!-- Begin Page Content -->
+      <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="text-center">Stress Level Prediction Result</h1>
+        <div class="alert alert-info">
+          <h4 class="alert-heading">Your Stress Level: <span th:text="${stressLevel}">Level X</span></h4>
+        </div>
+        <div class="text-center mb-4">
+          <a href="/" class="btn btn-primary">Go Back to Input Form</a>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+
+          <!-- Average Stress Level Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                      Average Stress Level</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">5,38</div>
+                  </div>
+                  <div class="col-auto">
+                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top Occupation by Stress Card -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                      Top Occupation by Stress</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Sales</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Earnings (Monthly) Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks
+                    </div>
+                    <div class="row no-gutters align-items-center">
+                      <div class="col-auto">
+                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pending Requests Card Example -->
+          <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+              <div class="card-body">
+                <div class="row no-gutters align-items-center">
+                  <div class="col mr-2">
+                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                      Total Data</div>
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">374</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Content Row -->
+        <div class="row">
+          <div class="col-xl-8 col-lg-7">
+            <!-- occupation -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Average Stress Level by Occupation</h6>
+              </div>
+              <!-- Card body -->
+              <div class="card-body">
+                <div class="chart-bar">
+                  <canvas id="occupation"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Heart Rate -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Average Stress Level by Heart Rate</h6>
+              </div>
+              <!-- Card body -->
+              <div class="card-body">
+                <div class="chart-line">
+                  <canvas id="heartRate"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-xl-4 col-lg-5">
+            <!-- sleep -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Average Stress Level by Sleep Duration </h6>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="chart-line">
+                  <canvas id="sleep"></canvas>
+                </div>
+              </div>
+            </div>
+
+            <!-- Gender -->
+            <div class="card shadow mb-4">
+              <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Average Stress Level by Gender</h6>
+              </div>
+              <!-- Card Body -->
+              <div class="card-body">
+                <div class="chart-bar">
+                  <canvas id="gender"></canvas>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- End of Content Row -->
+      </div>
+      <!-- End of Container -->
+    </div>
+    <!-- End of Main Content -->
+  </div>
+  <!-- End of Content Wrapper -->
 </div>
+<!-- End of Page Wrapper -->
+<!-- Initialize charts -->
+<script>
+  //Occupation
+  const occ = document.getElementById('occupation').getContext('2d');
+  function getGradientColors(dataLength) {
+    const startColor = [0, 0, 255]; // Biru tua RGB (0, 0, 255)
+    const endColor = [135, 206, 250]; // Biru muda RGB (135, 206, 250)
+
+    const colors = [];
+    for (let i = 0; i < dataLength; i++) {
+      const r = Math.floor(startColor[0] + (endColor[0] - startColor[0]) * (i / (dataLength - 1)));
+      const g = Math.floor(startColor[1] + (endColor[1] - startColor[1]) * (i / (dataLength - 1)));
+      const b = Math.floor(startColor[2] + (endColor[2] - startColor[2]) * (i / (dataLength - 1)));
+      colors.push(`rgb(${r}, ${g}, ${b})`);
+    }
+    return colors;
+  }
+  new Chart(occ, {
+    type: 'bar',
+    data: {
+      labels: ['Nurse', 'Sales', 'Salesperson', 'Doctor', 'Software Engineering', 'Scientist', 'Lawyer', 'Manager', 'Accountant', 'Teacher', 'Engineer'],
+      datasets: [{
+        label: 'Average Stress Level',
+        data: [8, 7, 7, 6.73, 6, 5.55, 5.06, 5, 4.59, 4.52, 3.89],
+        backgroundColor: getGradientColors(11)
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  // Sleep
+  const sleep = document.getElementById('sleep').getContext('2d');
+  new Chart(sleep, {
+    type: 'line',
+    data: {
+      labels: ['6hours', '7hours', '8hours'],
+      datasets: [
+      {
+        label: 'Male',
+        data: [7.14, 4.51, 3.06],
+        borderColor: 'blue',
+        fill: false,
+        tension: 0.4
+      },
+      {
+        label: 'Female',
+        data: [7.50, 5.14, 5.28],
+        borderColor: 'pink',
+        fill: false,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  // Heart Rate
+  const heart = document.getElementById('heartRate').getContext('2d');
+  new Chart(heart, {
+    type: 'line',
+    data: {
+      labels: ['68', '70', '72', '74', '76', '78', '80', '82', '84', '86'],
+      datasets: [{
+        label: 'Average Stress Level',
+        data: [3.98, 5.60, 7.21, 7, 6, 7, 7, 7, 5, 3],
+        borderColor: 'blue',
+        fill: false,
+        tension: 0.4
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+
+  //gender
+  const gender = document.getElementById('gender').getContext('2d');
+  new Chart(gender, {
+    type: 'bar',
+    data: {
+      labels: ['Male', 'Female'],
+      datasets: [{
+        label: 'Average Stress Level',
+        data: [4.68, 6.08],
+        backgroundColor: ['#87ceeb', 'pink']
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false
+    }
+  });
+</script>
+
 </body>
+
 </html>
